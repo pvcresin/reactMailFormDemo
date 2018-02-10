@@ -18272,7 +18272,7 @@ module.exports = camelize;
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 exports.default = undefined;
 
@@ -18305,117 +18305,117 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
-	var desc = {};
-	Object['ke' + 'ys'](descriptor).forEach(function (key) {
-		desc[key] = descriptor[key];
-	});
-	desc.enumerable = !!desc.enumerable;
-	desc.configurable = !!desc.configurable;
+    var desc = {};
+    Object['ke' + 'ys'](descriptor).forEach(function (key) {
+        desc[key] = descriptor[key];
+    });
+    desc.enumerable = !!desc.enumerable;
+    desc.configurable = !!desc.configurable;
 
-	if ('value' in desc || desc.initializer) {
-		desc.writable = true;
-	}
+    if ('value' in desc || desc.initializer) {
+        desc.writable = true;
+    }
 
-	desc = decorators.slice().reverse().reduce(function (desc, decorator) {
-		return decorator(target, property, desc) || desc;
-	}, desc);
+    desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+        return decorator(target, property, desc) || desc;
+    }, desc);
 
-	if (context && desc.initializer !== void 0) {
-		desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
-		desc.initializer = undefined;
-	}
+    if (context && desc.initializer !== void 0) {
+        desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+        desc.initializer = undefined;
+    }
 
-	if (desc.initializer === void 0) {
-		Object['define' + 'Property'](target, property, desc);
-		desc = null;
-	}
+    if (desc.initializer === void 0) {
+        Object['define' + 'Property'](target, property, desc);
+        desc = null;
+    }
 
-	return desc;
+    return desc;
 }
 
 var App = (_class = function (_Component) {
-	_inherits(App, _Component);
+    _inherits(App, _Component);
 
-	function App() {
-		_classCallCheck(this, App);
+    function App(props) {
+        _classCallCheck(this, App);
 
-		var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-		_this.state = {
-			name: '',
-			text: '',
-			result: {}
-		};
-		return _this;
-	}
+        _this.state = {
+            name: '',
+            text: '',
+            result: {}
+        };
+        return _this;
+    }
 
-	_createClass(App, [{
-		key: 'editName',
-		value: function editName(e) {
-			this.setState({ name: e.currentTarget.value });
-		}
-	}, {
-		key: 'editText',
-		value: function editText(e) {
-			this.setState({ text: e.currentTarget.value });
-		}
-	}, {
-		key: 'submit',
-		value: function submit() {
-			var _this2 = this;
+    _createClass(App, [{
+        key: 'editName',
+        value: function editName(e) {
+            this.setState({ name: e.currentTarget.value });
+        }
+    }, {
+        key: 'editText',
+        value: function editText(e) {
+            this.setState({ text: e.currentTarget.value });
+        }
+    }, {
+        key: 'submit',
+        value: function submit() {
+            var _this2 = this;
 
-			// alert(`氏名: ${this.state.name} \n内容: ${this.state.text}`)
-			var url = './sendContactMessage';
-			fetch(url, {
-				headers: { 'Content-Type': 'application/json' },
-				method: 'POST',
-				body: JSON.stringify({
-					name: this.state.name,
-					text: this.state.text
-				})
-			}).then(function (response) {
-				return response.json();
-			}).then(function (json) {
-				_this2.setState({ result: json });
-			});
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					'p',
-					null,
-					_react2.default.createElement(
-						'label',
-						null,
-						'name'
-					),
-					_react2.default.createElement('input', { type: 'text', onChange: this.editName })
-				),
-				_react2.default.createElement(
-					'p',
-					null,
-					_react2.default.createElement(
-						'label',
-						null,
-						'text'
-					),
-					_react2.default.createElement('textarea', { onChange: this.editText })
-				),
-				_react2.default.createElement(
-					'button',
-					{ onClick: this.submit },
-					'submit'
-				),
-				_react2.default.createElement(_reactJsonView2.default, { src: this.state.result })
-			);
-		}
-	}]);
+            // alert(`氏名: ${this.state.name} \n内容: ${this.state.text}`)
+            var url = './sendContactMessage';
+            fetch(url, {
+                headers: { 'Content-Type': 'application/json' },
+                method: 'POST',
+                body: JSON.stringify({
+                    name: this.state.name,
+                    text: this.state.text
+                })
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                _this2.setState({ result: json });
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'name'
+                    ),
+                    _react2.default.createElement('input', { type: 'text', onChange: this.editName, value: this.state.name })
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'text'
+                    ),
+                    _react2.default.createElement('textarea', { onChange: this.editText, value: this.state.text })
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.submit },
+                    'submit'
+                ),
+                _react2.default.createElement(_reactJsonView2.default, { src: this.state.result })
+            );
+        }
+    }]);
 
-	return App;
+    return App;
 }(_react.Component), (_applyDecoratedDescriptor(_class.prototype, 'editName', [_autobindDecorator2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'editName'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'editText', [_autobindDecorator2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'editText'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'submit', [_autobindDecorator2.default], Object.getOwnPropertyDescriptor(_class.prototype, 'submit'), _class.prototype)), _class);
 exports.default = App;
 

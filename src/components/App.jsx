@@ -4,8 +4,8 @@ import autobind from 'autobind-decorator'
 import ReactJson from 'react-json-view'
 
 export default class App extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             name: '',
             text: '',
@@ -42,11 +42,11 @@ export default class App extends Component {
             <div>
                 <p>
                     <label>name</label>
-                    <input type='text' onChange={this.editName} />
+                    <input type='text' onChange={this.editName} value={this.state.name} />
                 </p>
                 <p>
                     <label>text</label>
-                    <textarea onChange={this.editText}></textarea>
+                    <textarea onChange={this.editText} value={this.state.text}></textarea>
                 </p>
                 <button onClick={this.submit}>submit</button>
                 <ReactJson src={this.state.result} />
