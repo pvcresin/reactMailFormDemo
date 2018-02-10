@@ -274,7 +274,7 @@ h1タグがレンダリングされているはず
 
 ---
 # コンポーネントを作る
-- `dist/component/App.jsx`を作る
+- `src/components/App.jsx`を作る
     ```jsx
     import React, { Component } from 'react'
     import ReactDOM from 'react-dom'
@@ -351,8 +351,8 @@ submit() {
   <Todo text='test' />
   ```
 - Stateを持たないコンポーネントは関数でも書ける
-  ```jsx
-  const Todo = (props) => (<div>{props.text}</div>)
+  ```
+  const Todo = props => <div>{props.text}</div>
   ```
 
 ---
@@ -472,7 +472,7 @@ Nodeのサーバ立てるのに便利なフレームワーク
 	- `body-parser`: JSON扱えるようにする君
 
 - `npm script`に起動コマンド追加
-	- `"start": "node server.js",`
+	- `"start": "node server.js"`
     - Nodeの使い方
     	- `node server.js`で`server.js`を実行
 ---
@@ -556,7 +556,7 @@ A()
 
 ---
 # fetchとは
-GETとかPOSTする時にPromise型で処理できる
+GETとかPOSTする時にPromise型で処理できる関数
 - 使い方
   ```js
   fetch(url, {
