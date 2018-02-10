@@ -10,18 +10,17 @@ React はじめの一歩
 - 軽めのReactを書けるようになる
 - （Nodeのサーバを建てられるようになる）
 #### やらないこと
-- CSS（`CSS-modules`），
+- CSS（`CSS-modules`）
 - アーキテクチャ（`Flux`，`Redux`）
 <!-- page_number: true -->
 
 ---
 # 事前準備
 #### 使うもの
-- Google Chrome, Visual Studio Code
-- Node.js （v8.x）, Yarn
+- Google Chrome, Visual Studio Code，Yarn，Node.js （v8.x）
 
 #### ちなみに
-- 今回，最終的にできるファイルは[ここ](https://github.com/pvcresin/reactMailFormDemo)からClone
+- 今回，最終的にできるファイルは[ここ](https://github.com/pvcresin/reactMailFormDemo)
 - [前回](https://speakerdeck.com/pvcresin/shi-dang-nijiao-eruzui-jin-falsehurontoendokai-fa-di-bu)のスライドを読み，ツールを使いこなせる前提で進めていきます
 
 ---
@@ -29,8 +28,9 @@ React はじめの一歩
 - 復習
 - Reactとは
 - 準備（Chrome拡張，VSC拡張）
-- Reactをビルドしてみる
+- Reactを動かしてみる
 - メールフォームを作る
+	- Promiseとfetch
 - ライブラリを使ってみる
 
 ---
@@ -50,7 +50,7 @@ React はじめの一歩
   var f = function(x) {
     return x * 2
   }
-  
+
   // アロー関数
   const f = (x) => {
     return x * 2
@@ -60,8 +60,8 @@ React はじめの一歩
   ```
 
 ---
-# JavaScript（ES6）の復習
-クラス構文（内部的には関数に変換されるらしい）
+- クラス構文
+（内部的には関数に変換されるらしい）
   ```js
   class Person {
     constructor(name) {
@@ -71,31 +71,35 @@ React はじめの一歩
       console.log(`My name is ${this.name}.`)
     }
   }
-  
+
   const p = new Person('es6')
   p.hello()	//=> "My name is es6."
   ```
 
 ---
-# JavaScript（ES6）の復習
-- `import` / `export` 
-  - **person.js** 
-  	- `export default class Person { }`
-  - **index.js** 
-  	- `import Person from './person'`
+- `import` / `export`
+  - **person.js**
+  	```js
+  	export default class Person { }
+	```
+  - **index.js**
+	```js
+	`import Person from './person'
+	```
+	importすることでindex.jsでもPersonクラスが使える
 
 ---
 # React.jsとは
 - UIのコンポーネント（構成部品）を作るためのライブラリ
 - FacebookのOSS
 
-## 特徴
-- Virtual DOM（仮想DOM）が速い
+#### 特徴
+- 仮想DOM（Virtual DOM）が速い
 - JS内にHTMLを書くようなJSX記法（なくても可）
 - Reactの記法でiOSやAndroidのネイティブアプリが書ける[React Native](https://facebook.github.io/react-native/)もある
 
 ---
-# Virtual DOMとは
+# 仮想DOMとは
 - 生のDOM（HTMLインスタンス）に1対1対応するJSのオブジェクトのこと
 - その差分によって必要最低限のDOM操作で状態遷移を実現
 - データが変更されると自動で差分レンダリング
@@ -105,41 +109,39 @@ React はじめの一歩
 #### 従来
 - データに変更があったら，生のDOM要素から対応する部分を手で探しだし，中身を書き換える
 	➜ 変更箇所を探すのが大変
-#### Virtual DOM
+#### 仮想DOM
 - 自動で差分が更新されて楽
 - ただのJSのオブジェクトの比較なので軽い
 
 ---
 # JSX記法
+JSの言語拡張，JS内にHTMLタグ書けるイメージ
 ```js
-class App extends React.Component {
+class App extends Component {
   render() {
     return (
-      <div>
-        Hello {this.props.name}
-      </div>
+      <div>Hello React</div>
     )
   }
 }
 
-ReactDOM.render(
-  <App />, 
-  document.querySelector('main')
+render(
+  <App />, document.querySelector('main')
 )
 ```
-拡張子は`.js`でも`.jsx`でもよさそう
+拡張子は`.jsx`（`.js`でもよさそう）
 
 ---
 # 準備
 - VSC設定
   ```json
   "editor.formatOnSave": true,
-  "files.trimTrailingWhitespace": true, 
+  "files.trimTrailingWhitespace": true,
   ```
 - Chrome拡張
   - [React Dev Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=ja)
-      - `拡張`からファイルへのアクセスを許可しとく 
- 
+      - `拡張`からファイルへのアクセスを許可しとく
+
 - プロジェクトフォルダを作り，`yarn init -y`する
 
 ---
@@ -156,7 +158,7 @@ ReactDOM.render(
 - `babel-loader` : webpack上でバベれるようにする君
   - `babel-preset-es2015` : ES6 ➜ ES5
   - `babel-preset-react` : JSX ➜ 普通のJS
-  - `babel-plugin-transform-decorators-legacy` : 
+  - `babel-plugin-transform-decorators-legacy` :
   `@`（デコレータ）を使えるようにする君
 
 ---
@@ -167,7 +169,7 @@ ReactDOM.render(
 	- `index.html`
 	- `style.css`
 - `webpack.config.js` : webpackの設定
-- `jsconfig.json` : 
+- `jsconfig.json` :
 VSCが`@`に対してエラー表示しないように設定
 
 ---
@@ -185,8 +187,8 @@ VSCが`@`に対してエラー表示しないように設定
   ]
 }
 ```
-写すだけでOK
 プロジェクトルートに置いておく
+今後一切触らない
 
 ---
 # index.html
@@ -209,7 +211,7 @@ style.cssは空で大丈夫
 ---
 # webpack.config.js
 - `src/index.jsx`を`dist`に吐き出す
-- JSでimportする時に拡張子`js/jsx`を省略 : `resolve`
+- JSでimportする時に拡張子`js`，`jsx`を省略する
 ```js
 const webpack = require('webpack')
 const path = require('path')
@@ -225,7 +227,6 @@ module.exports = {
 ```
 
 ---
-# webpack.config.js
 ```js
   module: {
     rules: [{
@@ -243,6 +244,7 @@ module.exports = {
   }
 }
 ```
+- jsxのファイルに書かれたreactやらes6やらデコレータを普通のJSに変換する
 
 ---
 # index.jsx
@@ -256,7 +258,7 @@ render(<h1>React</h1>, document.querySelector('main'))
 `h1`タグをマウント（レンダリング）する
 
 ---
-# Reactをビルドしてみる
+# Reactを動かしてみる
 npm scriptはこんなん
 ```json
 "scripts": {
@@ -271,23 +273,23 @@ npm scriptはこんなん
 h1タグがレンダリングされているはず
 
 ---
-# 自作のコンポーネント
+# コンポーネントを作る
 - `dist/component/App.jsx`を作る
-```jsx
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+    ```jsx
+    import React, { Component } from 'react'
+    import ReactDOM from 'react-dom'
 
-export default class App extends Component {
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    return (
-      <div>App</div>
-    )
-  }
-}
-```
+    export default class App extends Component {
+      constructor(props) {
+        super(props)
+      }
+      render() {
+        return (
+          <div>App</div>
+        )
+      }
+    }
+    ```
 
 ---
 # index.jsx
@@ -312,18 +314,17 @@ submit() {
 render() {
   return (
     <div>
-      <button 
-      onClick={this.submit.bind(this)}>submit</button>
+      <button
+      	onClick={this.submit.bind(this)}>submit</button>
     </div>
   )
 }
 ```
-ボタンをクリックするとalertが出る
 
 ---
 # `autobind-decorator`を使う
 - イベントの度に`.bind(this)`を書かなくてもOKに
-- `yarn add autobind-decorator`しとく
+- `yarn add autobind-decorator`
 
 ```jsx
 import autobind from 'autobind-decorator' // importして
@@ -331,7 +332,7 @@ import autobind from 'autobind-decorator' // importして
 ```jsx
 @autobind // ってつけると
 submit() {
-  /* 処理 */ 
+  /* 処理 */
 }
 ```
 ```jsx
@@ -384,7 +385,7 @@ editName(e) {	// イベントe -> テキストをstateのnameに保存
 }
 ```
 ```jsx
-<input type='text' 
+<input type='text'
   onChange={this.editName} value={this.state.name} />
 ```
 コンポーネント内のデータと見た目が結びついた
@@ -433,12 +434,12 @@ export default class App extends Component {
       <div>
         <p>
           <label>name</label>
-          <input type='text' onChange={this.editName} 
+          <input type='text' onChange={this.editName}
             value={this.state.name} />
         </p>
         <p>
           <label>text</label>
-          <textarea onChange={this.editText} 
+          <textarea onChange={this.editText}
             value={this.state.text}></textarea>
         </p>
         <button onClick={this.submit}>submit</button>
@@ -466,7 +467,7 @@ https://github.com/pvcresin/reactMailFormDemo/blob/master/dist/style.css
 # サーバ起動準備
 
 - `yarn add express body-parser`
-	- `express`: 
+	- `express`:
 Nodeのサーバ立てるのに便利なフレームワーク
 	- `body-parser`: JSON扱えるようにする君
 
@@ -511,10 +512,10 @@ express()
 # サーバを起動
 
 1. `yarn watch`とは別のターミナルで`yarn start`
-	- VSCだと統合ターミナルの右に➕ボタン
-		- `yarn watch`: jsxをjsに変換
-		- `yarn start`: `dist`フォルダをserve
-1. `http://localhost:3000`にアクセス
+	- VSCは統合ターミナルの右に➕ボタンがある
+		- `yarn watch`: jsxをjsに変換し続ける
+		- `yarn start`: `dist`フォルダをserveし続ける
+1. http://localhost:3000 にアクセス
 
 あとはクライアントからデータを送信するだけ
 
@@ -567,7 +568,7 @@ GETとかPOSTする時にPromise型で処理できる
     /* 結果のJSONを使った処理 */
   })
   ```
-  
+
 詳しくは[この記事](https://qiita.com/tomoyukilabs/items/9b464c53450acc0b9574)が良さそう
 
 ---
@@ -614,25 +615,29 @@ submit() {
 
 `Dev-Tool`のReactタブで確認！
 
+できた～～～～！！
+
 ---
 # ライブラリを使ってみる
 - Reactの良いところはコンポーネントが世界中の開発者によってたくさん公開されているところ
-- うまく使って工数を削減していきたい気持ち
-- ただし，下手に古いライブラリとか使うと動かないので注意
+- うまく使って工数を削減していきたい
+- 下手に古いライブラリとか使うと動かないかも！
+	- 最終更新がいつか
+	- :star:が多いか　　　　　をチェック
 
 `npm`のライブラリは[npmjs.com](https://www.npmjs.com/)で検索できる
 
 ---
-# `react-json-view`を使ってみる
-- `yarn add react-json-view`
-- 使い方
-  ```jsx
-  <ReactJson src={this.state.result} />
-  ```
-	を`button`タグの後に入れてみる
+# [react-json-view](https://www.npmjs.com/package/react-json-view)を使ってみる
+`yarn add react-json-view`
+```jsx
+import ReactJson from 'react-json-view'
+```
+```jsx
+<ReactJson src={this.state.result} />
+```
+を`button`タグの後に入れてみる
 - Propsとして`src`で渡したJSONの構造が表示される
-
-送信したら結果のJSONオブジェクトが表示される！
 
 ---
 # おわり！
