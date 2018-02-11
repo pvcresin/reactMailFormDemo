@@ -27,16 +27,17 @@ React はじめの一歩
 # Menu
 - 復習
 - Reactとは
-- 準備（Chrome拡張，VSC拡張）
+	- 仮想DOMとは
 - Reactを動かしてみる
 - メールフォームを作る
 	- Promiseとfetch
+	- Nodeでサーバ立てる
 - ライブラリを使ってみる
 
 ---
 # [Yarn](https://yarnpkg.com/lang/en/)の復習
 - `yarn init` = package.jsonを作る
-- `yarn` = package.jsonの依存モジュールを全入れ
+- `yarn` = 依存モジュールを全部一気に入れる
 - `yarn add xxx` = 依存ライブラリ`xxx`を入れる
 - `yarn add -D xxx` = 開発用ライブラリ`xxx`を入れる
 - `yarn xxx`= npm scriptのタスク`xxx`を実行
@@ -44,7 +45,7 @@ React はじめの一歩
 ---
 # JavaScript（ES6）の復習
 - 変数宣言：再代入不可の`const`, 再代入可の`let`
-- アロー関数（≒無名関数・ラムダ式）
+- アロー関数（≒即時関数・ラムダ式）
   ```js
   // 従来の関数
   var f = function(x) {
@@ -55,7 +56,7 @@ React はじめの一歩
   const f = (x) => {
     return x * 2
   }
-  const f = (x) => x  * 2	// 1行なら中カッコ{}はずせる
+  const f = (x) => x * 2	// 1行なら中カッコ{}はずせる
   const f = x => x * 2	// 引数1つならカッコ()不要
   ```
 
@@ -90,33 +91,50 @@ React はじめの一歩
 
 ---
 # React.jsとは
-- UIのコンポーネント（構成部品）を作るためのライブラリ
-- FacebookのOSS
+- FacebookのOSSで，UIのコンポーネント（構成部品）を作るためのライブラリ
 
 #### 特徴
 - 仮想DOM（Virtual DOM）が速い
 - JS内にHTMLを書くようなJSX記法（なくても可）
 - Reactの記法でiOSやAndroidのネイティブアプリが書ける[React Native](https://facebook.github.io/react-native/)もある
 
+参考：[Reactを使うとなぜjQueryが要らなくなるのか](https://qiita.com/naruto/items/fdb61bc743395f8d8faf)
+
 ---
 # 仮想DOMとは
 - 生のDOM（HTMLインスタンス）に1対1対応するJSのオブジェクトのこと
-- その差分によって必要最低限のDOM操作で状態遷移を実現
-- データが変更されると自動で差分レンダリング
+- その差分によって**必要最低限のDOM操作**で状態遷移を実現
+- データが更新されると**自動で**差分レンダリング
+- 有名なフレームワークだと`React`や`Vue`が採用
 
 ---
 # 何が違うか
 #### 従来
-- データに変更があったら，生のDOM要素から対応する部分を手で探しだし，中身を書き換える
-	➜ 変更箇所を探すのが大変
+- データに変更があったら，生のDOM要素から対応する部分を探し，中身を書き換える
+	➜ 変更箇所を探すコードを書くのは大変
 #### 仮想DOM
-- 自動で差分が更新されて楽
-- ただのJSのオブジェクトの比較なので軽い
+- ライブラリが差分を検出し，自動更新してくれる
+➜ 何もしなくてもViewに流し込まれるから楽
+- ただのオブジェクトの比較なので，処理が軽い
+
+---
+# 例えば？
+画面のリスト`[a, b]` を 新しいリスト`[a, c]`に更新
+```html
+<li>a</li>			<li>a</li>
+<li>b</li> 	--- 更新 --> 	<li>c</li>
+```
+
+- 従来
+	- 現在の`<li>`タグを全て取得し，一つ一つを新しいデータと比較して書き換える
+	- 生のDOMを使って比較するので処理が重い
+- 仮想DOM
+	- 全自動:+1:
 
 ---
 # JSX記法
-JSの言語拡張，JS内にHTMLタグ書けるイメージ
-```js
+JSの言語拡張，JS内にHTMLタグが書けるイメージ
+```jsx
 class App extends Component {
   render() {
     return (
@@ -125,11 +143,10 @@ class App extends Component {
   }
 }
 
-render(
-  <App />, document.querySelector('main')
-)
+render(<App />, document.querySelector('main'))
 ```
 拡張子は`.jsx`（`.js`でもよさそう）
+`class`はJSで予約語のため，`className`と書く
 
 ---
 # 準備
@@ -150,9 +167,14 @@ render(
 - `react` : React本体
 - `react-dom` : オブジェクトをDOMと結びつける
 
----
 # 開発モジュール
-`yarn add -D babel-core babel-loader babel-plugin-transform-decorators-legacy babel-preset-es2015 babel-preset-react webpack`
+```bash
+yarn add -D webpack babel-core babel-loader 
+babel-preset-es2015 babel-preset-react 
+babel-plugin-transform-decorators-legacy 
+```
+
+---
 - `webpack` : JS合体君・バンドラ
 - `babel-core` : JSを変換する（**バベる**）君
 - `babel-loader` : webpack上でバベれるようにする君
@@ -283,7 +305,7 @@ h1タグがレンダリングされているはず
       constructor(props) {
         super(props)
       }
-      render() {
+      render() {	// 実際のAppタグの中身
         return (
           <div>App</div>
         )
@@ -347,8 +369,8 @@ submit() {
 - 例：Todoのリストを表示するアプリ
 `App` ➜ (list) ➜ `TodoList` ➜ (text) ➜ `Todo`
 - Propsの渡し方
-  ```jsx
-  <Todo text='test' />
+  ```html
+  <Todo text='買い物' />
   ```
 - Stateを持たないコンポーネントは関数でも書ける
   ```
@@ -451,11 +473,9 @@ export default class App extends Component {
 
 ---
 # cssも適当に作ったのでコピる
-
-https://github.com/pvcresin/reactMailFormDemo/blob/master/dist/style.css
-
-`dist`の直下の`style.css`にコピる
-- Rawボタンを押すと，コードがコピりやすくなる
+1. https://github.com/pvcresin/reactMailFormDemo/blob/master/dist/style.css にアクセス
+1. Rawボタンを押すと，コードがコピりやすくなる
+1. `dist`の直下の`style.css`にコピる
 
 ---
 # 基盤完成
@@ -465,7 +485,6 @@ https://github.com/pvcresin/reactMailFormDemo/blob/master/dist/style.css
 
 ---
 # サーバ起動準備
-
 - `yarn add express body-parser`
 	- `express`:
 Nodeのサーバ立てるのに便利なフレームワーク
@@ -476,41 +495,37 @@ Nodeのサーバ立てるのに便利なフレームワーク
     - Nodeの使い方
     	- `node server.js`で`server.js`を実行
 ---
-# `server.js`をルートに作成
+- `server.js`をプロジェクトルートに作成
 
-```js
-const express = require('express')
-const bodyParser = require('body-parser')
+  ```js
+  const express = require('express')
+  const bodyParser = require('body-parser')
 
-express()
-  .use(express.static('dist'))
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
-```
-続く
-
----
-```js
-  .post('/sendContactMessage', (req, res) => {
-    console.log(req.body)
-    res.json({
-      server_receive_time: new Date().toString(),
-      name: req.body.name,
-      text: req.body.text,
+  express()
+    .use(express.static('dist'))
+    .use(bodyParser.urlencoded({ extended: true }))
+    .use(bodyParser.json())
+    .post('/sendContactMessage', (req, res) => {
+      console.log(req.body)
+      res.json({
+        server_receive_time: new Date().toString(),
+        name: req.body.name,
+        text: req.body.text,
+      })
     })
-  })
-  .listen(3000, () => {
-    console.log('http://localhost:3000')
-  })
-```
-- `dist`フォルダをServe（index.htmlとか）
+    .listen(3000, () => {
+      console.log('http://localhost:3000')
+    })
+  ```
+---
+# `server.js` がやってること
+- `dist`フォルダをServe（html, cssとか）
 - `http://localhost:3000`でサーバを起動
 - `/sendContactMessage`にデータを`POST`すると値を返す
 	- `server_receive_time`，`name`，`text`が入ったJSON
 
 ---
 # サーバを起動
-
 1. `yarn watch`とは別のターミナルで`yarn start`
 	- VSCは統合ターミナルの右に➕ボタンがある
 		- `yarn watch`: jsxをjsに変換し続ける
@@ -522,8 +537,9 @@ express()
 ---
 # Promiseとは
 - 非同期処理に起こりがちなコードのCallback地獄から救い出す君
-- モダンブラウザだと大体対応している（はず）
-- Nodeだけど練習に[良い記事](https://qiita.com/koki_cheese/items/c559da338a3d307c9d88)
+- モダンブラウザなら大体対応している（はず）
+- Nodeだけど練習にいい記事
+[今更だけどPromise入門](https://qiita.com/koki_cheese/items/c559da338a3d307c9d88)
 
 ---
 # 何が良いか
@@ -549,10 +565,12 @@ A()
   .then(done)
 ```
 - メソッドチェーンできる（脱Callback地獄）
-- `Promise.all`
-	- 複数の処理が全て終わったら呼ばれる
-- `Promise.race`
-	- 複数の処理のうち1つが終わったら呼ばれる
+
+`Promise.all()`: 
+複数の処理が全て終わったら呼ばれる
+
+`Promise.race()`: 
+複数の処理のうち1つが終わったら呼ばれる
 
 ---
 # fetchとは
@@ -569,7 +587,7 @@ GETとかPOSTする時にPromise型で処理できる関数
   })
   ```
 
-詳しくは[この記事](https://qiita.com/tomoyukilabs/items/9b464c53450acc0b9574)が良さそう
+[お疲れさまXMLHttpRequest、こんにちはfetch](https://qiita.com/tomoyukilabs/items/9b464c53450acc0b9574)
 
 ---
 # 通信準備
