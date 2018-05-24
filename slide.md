@@ -37,7 +37,7 @@ React はじめの一歩
 ---
 # [Yarn](https://yarnpkg.com/lang/en/)の復習
 - `yarn init` = package.jsonを作る
-- `yarn` = 依存モジュールを全部一気に入れる
+- `yarn` = 必要なモジュールを全部一気に入れる
 - `yarn add xxx` = 依存ライブラリ`xxx`を入れる
 - `yarn add -D xxx` = 開発用ライブラリ`xxx`を入れる
 - `yarn xxx`= npm scriptのタスク`xxx`を実行
@@ -162,19 +162,49 @@ render(<App />, document.querySelector('main'))
 - プロジェクトフォルダを作り，`yarn init -y`する
 
 ---
-# 依存モジュール
-`yarn add react react-dom`
-- `react` : React本体
-- `react-dom` : オブジェクトをDOMと結びつける
-
-# 開発モジュール
-```bash
-yarn add -D webpack babel-core babel-loader 
-babel-preset-es2015 babel-preset-react 
-babel-plugin-transform-decorators-legacy 
+# モジュールのインストール
+`package.json`を先に写し，`yarn`する
+```
+{
+  "name": "reactMailFormDemo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "webpack": "^3.9.1"
+  },
+```
+---
+```
+  "dependencies": {
+    "autobind-decorator": "^2.1.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-json-view": "^1.16.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "build": "webpack",
+    "watch": "npm run build -- -w"
+  }
+}
 ```
 
 ---
+# 依存モジュール
+- `react` : React本体
+- `react-dom` : オブジェクトをDOMと結びつける
+
+
+---
+# 開発モジュール
 - `webpack` : JS合体君・バンドラ
 - `babel-core` : JSを変換する（**バベる**）君
 - `babel-loader` : webpack上でバベれるようにする君
@@ -281,13 +311,7 @@ render(<h1>React</h1>, document.querySelector('main'))
 
 ---
 # Reactを動かしてみる
-npm scriptはこんなん
-```json
-"scripts": {
-  "build": "webpack",
-  "watch": "npm run build -- -w"
-}
-```
+npm script
 - `yarn build` : webpackでJSを1度だけビルド
 - `yarn watch`: 変更を検知してビルドし直し続ける
 
@@ -346,7 +370,6 @@ render() {
 ---
 # `autobind-decorator`を使う
 - イベントの度に`.bind(this)`を書かなくてもOKに
-- `yarn add autobind-decorator`
 
 ```jsx
 import autobind from 'autobind-decorator' // importして
@@ -419,6 +442,7 @@ editName(e) {	// イベントe -> テキストをstateのnameに保存
 ```jsx
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import autobind from 'autobind-decorator'
 
 export default class App extends Component {
   constructor(props) {
@@ -473,8 +497,7 @@ export default class App extends Component {
 
 ---
 # cssも適当に作ったのでコピる
-1. https://github.com/pvcresin/reactMailFormDemo/blob/master/dist/style.css にアクセス
-1. Rawボタンを押すと，コードがコピりやすくなる
+1. https://raw.githubusercontent.com/pvcresin/reactMailFormDemo/master/dist/style.css にアクセス
 1. `dist`の直下の`style.css`にコピる
 
 ---
@@ -485,14 +508,14 @@ export default class App extends Component {
 
 ---
 # サーバ起動準備
-- `yarn add express body-parser`
+- モジュール
 	- `express`:
 Nodeのサーバ立てるのに便利なフレームワーク
 	- `body-parser`: JSON扱えるようにする君
 
-- `npm script`に起動コマンド追加
+- `npm script`
 	- `"start": "node server.js"`
-    - Nodeの使い方
+    - Node.jsの使い方
     	- `node server.js`で`server.js`を実行
 ---
 - `server.js`をプロジェクトルートに作成
@@ -527,9 +550,8 @@ Nodeのサーバ立てるのに便利なフレームワーク
 ---
 # サーバを起動
 1. `yarn watch`とは別のターミナルで`yarn start`
-	- VSCは統合ターミナルの右に➕ボタンがある
-		- `yarn watch`: jsxをjsに変換し続ける
-		- `yarn start`: `dist`フォルダをserveし続ける
+    - `yarn watch`: jsxをjsに変換し続ける
+    - `yarn start`: `dist`フォルダをserveし続ける
 1. http://localhost:3000 にアクセス
 
 あとはクライアントからデータを送信するだけ
@@ -566,10 +588,10 @@ A()
 ```
 - メソッドチェーンできる（脱Callback地獄）
 
-`Promise.all()`: 
+`Promise.all()`:
 複数の処理が全て終わったら呼ばれる
 
-`Promise.race()`: 
+`Promise.race()`:
 複数の処理のうち1つが終わったら呼ばれる
 
 ---
@@ -647,7 +669,6 @@ submit() {
 
 ---
 # [react-json-view](https://www.npmjs.com/package/react-json-view)を使ってみる
-`yarn add react-json-view`
 ```jsx
 import ReactJson from 'react-json-view'
 ```
